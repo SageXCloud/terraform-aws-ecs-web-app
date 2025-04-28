@@ -8,7 +8,7 @@ module "ecr" {
   attributes           = ["ecr"]
   scan_images_on_push  = var.ecr_scan_images_on_push
   image_tag_mutability = var.ecr_image_tag_mutability
-
+  max_image_count      = var.ecr_max_image_count
   context = module.this.context
 }
 

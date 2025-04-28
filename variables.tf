@@ -1109,3 +1109,9 @@ variable "circuit_breaker_rollback_enabled" {
   description = "If `true`, Amazon ECS will roll back the service if a service deployment fails"
   default     = false
 }
+
+variable "ecr_max_image_count" {
+  type        = number
+  description = "How many Docker Image versions AWS ECR will store"
+  default     = 500
+}
