@@ -547,30 +547,6 @@ variable "vpc_id" {
   description = "The VPC ID where resources are created"
 }
 
-variable "aws_logs_region" {
-  type        = string
-  description = "The region for the AWS Cloudwatch Logs group"
-  default     = null
-}
-
-variable "aws_logs_prefix" {
-  type        = string
-  description = "Custom AWS Logs prefix. If empty name from label module will be used"
-  default     = ""
-}
-
-variable "log_retention_in_days" {
-  type        = number
-  description = "The number of days to retain logs for the log group"
-  default     = 90
-}
-
-variable "log_driver" {
-  type        = string
-  description = "The log driver to use for the container. If using Fargate launch type, only supported value is awslogs"
-  default     = "awslogs"
-}
-
 variable "assign_public_ip" {
   type        = bool
   description = "Assign a public IP address to the ENI (Fargate launch type only). Valid values are `true` or `false`. Default `false`"
@@ -1038,6 +1014,11 @@ variable "cloudwatch_log_group_enabled" {
   default     = true
 }
 
+variable "log_retention_in_days" {
+  type        = number
+  description = "The number of days to retain logs for the log group"
+  default     = 90
+}
 variable "alb_container_name" {
   type        = string
   description = "The name of the container to associate with the ALB. If not provided, the generated container will be used"
@@ -1114,4 +1095,28 @@ variable "ecr_max_image_count" {
   type        = number
   description = "How many Docker Image versions AWS ECR will store"
   default     = 500
+}
+
+# https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_LogConfiguration.html
+variable "log_configuration" {
+  type = object({
+    logDriver = string
+    options   = optional(map(string))
+    secretOptions = optional(list(object({
+      name      = string
+      valueFrom = string
+    })))
+  })
+  description = "Log configuration options to send to a custom log driver for the container. For more details, see https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_LogConfiguration.html"
+  default     = null
+}
+
+# https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_FirelensConfiguration.html
+variable "firelens_configuration" {
+  type = object({
+    options = optional(map(string))
+    type    = string
+  })
+  description = "The FireLens configuration for the container. This is used to specify and configure a log router for container logs. For more details, see https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_FirelensConfiguration.html"
+  default     = null
 }
