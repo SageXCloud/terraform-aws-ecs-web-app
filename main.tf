@@ -162,6 +162,7 @@ module "ecs_alb_service_task" {
   container_port                     = var.container_port
   nlb_container_port                 = var.nlb_container_port
   docker_volumes                     = var.volumes
+  bind_mount_volumes                 = var.bind_mount_volumes
   ecs_load_balancers                 = local.load_balancers
   deployment_controller_type         = var.deployment_controller_type
   deployment_maximum_percent         = var.deployment_maximum_percent
